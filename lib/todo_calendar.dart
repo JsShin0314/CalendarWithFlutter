@@ -57,7 +57,11 @@ class _Calendar extends State<Calendar> {
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text("Calendar"),
+            title: Text("달력",
+                style: TextStyle(
+                color: Colors.white, fontSize: 20),
+            ),
+            backgroundColor: Color(0xFF266DAC),
           ),
           body: BlocBuilder(
             bloc: _todoBloc,
@@ -187,7 +191,7 @@ class _Calendar extends State<Calendar> {
                         itemCount: state.todoList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return ListTile(
-                            title: Text(state.todoList[index].todo),
+                            title: Text(state.todoList[index].date + " " + state.todoList[index].todo),
                             //listTile을 누르게 되면 해당 list에대한 dialog가 뜨게 된다.
                             onTap: () {
                               _showDialog(state.todoList[index].todo,

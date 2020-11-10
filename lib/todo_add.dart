@@ -30,6 +30,7 @@ class _TodoAdd extends State<TodoAdd> {
     //앞에서 생성된 블럭을 받아와 계속 해서 사용하게 된다.
     _todoBloc = BlocProvider.of<TodoBloc>(context);
     formattedDate = DateFormat('yyyy년 MM월 dd일').format(_todoBloc.getSelectedDate());
+    selectDate = DateFormat('yyyy-MM-dd').format(_todoBloc.getSelectedDate());
   }
 
   @override
@@ -43,9 +44,13 @@ class _TodoAdd extends State<TodoAdd> {
           bloc: _todoBloc,
           builder: (BuildContext context, TodoState state) {
             return Scaffold(
+                resizeToAvoidBottomPadding: false,
                 appBar: AppBar(
                   centerTitle: true,
-                  title: Text("Todo Add"),
+                  title: Text("일정 추가",
+                    style: TextStyle(
+                        color: Colors.white, fontSize: 20),),
+                  backgroundColor: Color(0xFF266DAC),
                 ),
                 body: Container(
                   padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
@@ -54,14 +59,14 @@ class _TodoAdd extends State<TodoAdd> {
                     children: <Widget>[
                       //여기서 부터 메모까지는 간단하게 Text, TextField를 활용하는 것이다.
                       Container(
-                          height: 30,
+                          height: MediaQuery.of(context).size.height * 0.08,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            '할 일',
+                            '제목',
                             style: Theme.of(context).textTheme.display1,
                           )),
                       TextField(
-                        decoration: InputDecoration(hintText: '무엇을 하실건가요'),
+                        decoration: InputDecoration(hintText: '필수 입력란 입니다.'),
                         controller: todo,
                       ),
                       Padding(
@@ -159,7 +164,7 @@ class _TodoAdd extends State<TodoAdd> {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: Text('할일 섹션을 반드시 채워 주세요!'),
+                                        title: Text('제목을 반드시 채워 주세요!'),
                                         content: Text("Select button you want"),
                                         actions: <Widget>[
                                           FlatButton(
@@ -174,15 +179,16 @@ class _TodoAdd extends State<TodoAdd> {
                               }
                             },
                             child: Container(
-                              width: MediaQuery.of(context).size.width / 2.5,
+                              width: MediaQuery.of(context).size.width / 3,
                               height: 55,
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Icon(Icons.add),
                                   Text(
-                                    '새로운 일정 추가하기',
+                                    '추가하기',
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 16),
+                                        color: Colors.white, fontSize: 15),
                                   ),
                                 ],
                               ),
@@ -203,7 +209,7 @@ class _TodoAdd extends State<TodoAdd> {
     DateTime d = await showDatePicker(
       context: context,
       locale: const Locale('ko', 'KO'),
-      initialDate: (selectDate == null) ? _todoBloc.getSelectedDate() : DateTime.parse(selectDate),
+      initialDate: DateTime.parse(selectDate),
       firstDate: DateTime(2020),
       lastDate: DateTime(2050),
     );
